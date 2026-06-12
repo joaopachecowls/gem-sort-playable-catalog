@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-version="20260615-gem-sort-catalog-v1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+<title>GEM SORT Hub — Catálogo</title>
+<style>
+  :root {
+    --bg: #100d16;
+    --surface: #1a1622;
+    --surface-2: #251f30;
+    --border: #322a42;
+    --text: #f7f4fb;
+    --text-dim: #a89fbd;
+    --accent: #ff4f9a;
+    --accent-2: #ffce4d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; display: flex; flex-direction: column; }
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; background: rgba(16,13,22,0.85); backdrop-filter: blur(12px); z-index: 10;
+  }
+  .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  nav { display: flex; gap: 24px; font-size: 14px; color: var(--text-dim); }
+  nav a:hover { color: var(--text); }
+
+  main { flex: 1; padding: 48px 32px 96px; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+  .hero { margin-bottom: 56px; }
+  .hero h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.05; margin-bottom: 16px; }
+  .hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { color: var(--text-dim); font-size: 17px; max-width: 640px; line-height: 1.5; }
+
+  .section-title { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); margin: 0 0 20px; font-weight: 600; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.2s ease;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); background: var(--surface-2); }
+  .card .thumb {
+    background: linear-gradient(135deg, #2a2336, #1d1827);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 8px;
+    display: grid; place-items: center;
+  }
+  .card .thumb img { width: 100%; max-width: 230px; height: auto; display: block; image-rendering: auto; }
+  .card .name { font-weight: 700; font-size: 17px; }
+  .card .desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.45; min-height: 36px; }
+  .card .meta { font-size: 11px; color: var(--text-dim); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .card .play {
+    margin-top: 4px; font-size: 12px; color: var(--accent); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .card .badge { position: absolute; top: 12px; right: 12px; font-size: 10px; padding: 3px 8px; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 700; letter-spacing: 0.5px; }
+  .card.original .badge { background: var(--accent-2); color: #3a2a00; }
+
+  .note {
+    margin-top: 48px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    color: var(--text-dim); font-size: 13px; line-height: 1.55;
+  }
+  .note strong { color: var(--text); }
+  .note code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; background: var(--surface-2); padding: 1px 6px; border-radius: 6px; }
+
+  footer {
+    padding: 24px 32px; border-top: 1px solid var(--border);
+    color: var(--text-dim); font-size: 12px; text-align: center;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">GEM SORT<span>.</span>HUB</div>
+  <nav>
+    <a href="#catalog">Catálogo</a>
+    <a href="#about">Sobre</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Catálogo de <em>Versões</em></h1>
+    <p>O mesmo puzzle de revelar a imagem, em 8 estilos de beads diferentes.
+       Cada versão é um playable completo (arquivo único, &lt;5&nbsp;MB) pronto para teste.
+       Clique em uma versão para jogar.</p>
+  </section>
+
+  <section id="catalog">
+    <div class="section-title">Versões — formato dos beads</div>
+    <div class="grid" id="versions"></div>
+  </section>
+
+  <section id="about">
+    <div class="note">
+      <strong>Sobre este catálogo.</strong> As 8 versões foram geradas a partir do mesmo build base
+      (imagem revelada: cãozinho 🐶, logo GEM SORT, bolsa de veludo, CTA placeholder das lojas) —
+      a única diferença entre elas é o conjunto de sprites dos beads.
+      A versão de manutenção continua em <code>dist/playable.html</code> e é editada pela ferramenta
+      <code>Shift+H</code>; este catálogo é regenerado com <code>python tools/build_catalog.py</code>.
+    </div>
+  </section>
+</main>
+
+<footer>
+  Built with vanilla web tech · <a href="#">GEM SORT Hub</a>
+</footer>
+
+<script>
+const VERSIONS = [
+  { key:"square", slug:"quadrado",      name:"Quadrado (Original)", badge:"original",
+    desc:"Os beads quadrados clássicos do jogo de referência — visual de miçangas em moldura." },
+  { key:"ball",   slug:"bolinha",       name:"Bolinha", badge:"v2",
+    desc:"Esferas brilhantes com sombreamento suave e rim light na base." },
+  { key:"cross",  slug:"ponto-cruz",    name:"Ponto Cruz", badge:"v3",
+    desc:"X de bordado com textura de fio trançado; células vazias com X afundado em tom escuro." },
+  { key:"jelly",  slug:"gelatina",      name:"Gelatina", badge:"v4",
+    desc:"Cubos gummy translúcidos com brilho glassy; moldura escura na célula preenchida." },
+  { key:"pixel",  slug:"pixel-art",     name:"Pixel Art", badge:"v5",
+    desc:"Quadrados chapados de cor sólida — visual retrô 8-bit minimalista." },
+  { key:"pin",    slug:"pin",           name:"Pin", badge:"v6",
+    desc:"Botões de esmalte com aro metálico; pegboard com furo de agulha nas células vazias." },
+  { key:"star",   slug:"estrela",       name:"Estrela", badge:"v7",
+    desc:"Estrelas vazadas sobre quadrados com estrela chanfrada (afundada) em tom escuro." },
+  { key:"puzzle", slug:"quebra-cabeca", name:"Quebra-Cabeça", badge:"v8",
+    desc:"Peças de puzzle que se encaixam; células vazias com a peça gravada em baixo-relevo." },
+];
+
+const grid = document.getElementById("versions");
+grid.innerHTML = VERSIONS.map(v => `
+  <a class="card ${v.badge==='original'?'original':''}" href="versions/gem-sort-${v.slug}.html?_cb=${Date.now()}" target="_blank" rel="noopener">
+    <div class="badge">${v.badge === 'original' ? 'ORIGINAL' : v.badge.toUpperCase()}</div>
+    <div class="thumb"><img src="thumbs/${v.key}.png" alt="beads ${v.name}" loading="lazy"></div>
+    <div class="name">${v.name}</div>
+    <div class="desc">${v.desc}</div>
+    <div class="meta">gem-sort-${v.slug}.html</div>
+    <div class="play">▶ Jogar</div>
+  </a>
+`).join("");
+</script>
+<script>
+// Self-healing cache check (same pattern as the reference hub): if the locally
+// rendered data-version differs from the live one, force a network reload.
+(() => {
+  try {
+    const localVersion = document.documentElement.dataset.version || '';
+    const url = window.location.pathname + '?_freshness=' + Date.now();
+    fetch(url, { cache: 'no-store' })
+      .then(r => r.ok ? r.text() : null)
+      .then(html => {
+        if (!html) return;
+        const m = html.match(/data-version="([^"]+)"/);
+        const liveVersion = m ? m[1] : '';
+        if (liveVersion && localVersion && liveVersion !== localVersion) {
+          window.location.replace(window.location.pathname + '?_v=' + encodeURIComponent(liveVersion) + window.location.hash);
+        }
+      })
+      .catch(() => {});
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

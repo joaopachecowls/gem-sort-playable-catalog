@@ -409,12 +409,16 @@ canvas {
       for(var x=0;x<32;x++)for(var y=0;y<32;y++){
         var e=gf._gameArray[x]&&gf._gameArray[x][y];
         if(!e||!e.cell) continue;
+        // scale the cell's OWN sprite (the empty/preview layer) so the grayscale
+        // jigsaw interlocks before pieces are placed
+        var cu=e.cell._uiProps&&e.cell._uiProps.uiTransformComp;
+        if(cu && Math.abs(cu.contentSize.width-T)>0.01){ try{cu.setContentSize(T,T);}catch(_){} }
+        // scale each gem child too (the placed colored piece)
         var ch=e.cell.children;
         if(ch) for(var k=0;k<ch.length;k++){
           var u=ch[k]._uiProps&&ch[k]._uiProps.uiTransformComp;
           if(u && Math.abs(u.contentSize.width-T)>0.01){ try{u.setContentSize(T,T);}catch(_){} }
         }
-        if(e.used){ var own=e.cell.getComponent(cc.Sprite); if(own && own.enabled) own.enabled=false; }
       }
     }catch(err){}
   },200);

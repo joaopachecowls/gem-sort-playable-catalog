@@ -396,23 +396,28 @@ canvas {
 <script>/*gem-sort-gemscale*/
 (function(){
   var T=22.06;
-  function apply(){
-    if(typeof cc==='undefined'||!cc.director||!cc.director.getScene()) return false;
-    var gf=null; (function f(n){var c=n.getComponent&&n.getComponent('gameField'); if(c)gf=c; (n.children||[]).forEach(f);})(cc.director.getScene());
-    if(!gf||!gf._gameArray) return false;
-    var n=0;
-    for(var x=0;x<32;x++)for(var y=0;y<32;y++){
-      var e=gf._gameArray[x]&&gf._gameArray[x][y];
-      if(e&&e.cell&&e.cell.children){
-        e.cell.children.forEach(function(ch){
-          var u=ch._uiProps&&ch._uiProps.uiTransformComp;
-          if(u){ try{u.setContentSize(T,T);}catch(_){try{u.width=T;u.height=T;}catch(__){}} n++; }
-        });
+  // (1) enlarge each placed gem to T units so the body fills the cell and the knobs
+  //     overlap into neighbours; (2) once a cell is PLACED (used), hide its own
+  //     'empty' sprite so the neighbours' knobs show through this gem's blank notches
+  //     (otherwise the empty backing covers them and pieces look separated).
+  // Re-applied every tick (cheap: setContentSize only fires when a gem isn't already T).
+  setInterval(function(){
+    try{
+      if(typeof cc==='undefined'||!cc.director||!cc.director.getScene()) return;
+      var gf=null; (function f(n){var c=n.getComponent&&n.getComponent('gameField'); if(c)gf=c; (n.children||[]).forEach(f);})(cc.director.getScene());
+      if(!gf||!gf._gameArray) return;
+      for(var x=0;x<32;x++)for(var y=0;y<32;y++){
+        var e=gf._gameArray[x]&&gf._gameArray[x][y];
+        if(!e||!e.cell) continue;
+        var ch=e.cell.children;
+        if(ch) for(var k=0;k<ch.length;k++){
+          var u=ch[k]._uiProps&&ch[k]._uiProps.uiTransformComp;
+          if(u && Math.abs(u.contentSize.width-T)>0.01){ try{u.setContentSize(T,T);}catch(_){} }
+        }
+        if(e.used){ var own=e.cell.getComponent(cc.Sprite); if(own && own.enabled) own.enabled=false; }
       }
-    }
-    return n>0;
-  }
-  var tries=0, iv=setInterval(function(){ if(apply()||++tries>60) clearInterval(iv); },150);
+    }catch(err){}
+  },200);
 })();
 </script>
 <script>/*gem-sort-cta*/
